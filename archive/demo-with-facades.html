@@ -1,0 +1,137 @@
+﻿<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Wind Compass Card - demo</title>
+  <style>
+    body {
+      font-family: Roboto, "Segoe UI", sans-serif; margin: 24px;
+      background: #f0f2f5; color: var(--primary-text-color);
+      --primary-text-color: #212121; --secondary-text-color: #727272;
+      --divider-color: #e0e0e0; --secondary-background-color: #f5f5f5;
+      --card-background-color: #fff; --primary-color: #03a9f4;
+      --warning-color: #ffa600; --error-color: #db4437; --info-color: #039be5;
+    }
+    body.dark {
+      background: #111;
+      --primary-text-color: #e1e1e1; --secondary-text-color: #9b9b9b;
+      --divider-color: #3a3a3a; --secondary-background-color: #262626;
+      --card-background-color: #1c1c1c;
+    }
+    .controls { display: grid; gap: 10px; max-width: 420px; margin-bottom: 24px; }
+    .cards { display: flex; gap: 16px; flex-wrap: wrap; align-items: flex-start; }
+    wind-compass-card { width: 320px; }
+    wind-compass-card.small { width: 220px; }
+    pre { background: var(--card-background-color); padding: 12px; border-radius: 8px; max-width: 520px; overflow: auto; }
+    input[type=range] { width: 100%; }
+  </style>
+</head>
+<body>
+  <div class="controls">
+    <label>Direzione di provenienza: <span id="dv"></span>°<br><input id="dir" type="range" min="0" max="359" value="45"></label>
+    <label>Velocità: <span id="sv"></span> km/h<br><input id="spd" type="range" min="0" max="80" value="6"></label>
+    <label>Pioggia: <span id="rv"></span> mm/h<br><input id="rain" type="range" min="0" max="15" step="0.1" value="2"></label>
+    <label><input id="dark" type="checkbox"> Tema scuro</label>
+  </div>
+  <div class="cards">
+    <wind-compass-card id="c1"></wind-compass-card>
+    <wind-compass-card id="c2" class="small"></wind-compass-card>
+  </div>
+  <p>Configurazione usata nella demo:</p>
+  <pre id="yaml"></pre>
+
+  <script>
+    // Minimal stand-in for Home Assistant's <ha-card> outside HA
+    customElements.define("ha-card", class extends HTMLElement {
+      constructor() {
+        super();
+        this.attachShadow({ mode: "open" }).innerHTML =
+          "<style>:host{display:block;background:var(--card-background-color);border-radius:12px;box-shadow:0 2px 6px rgba(0,0,0,.12)}</style><slot></slot>";
+      }
+    });
+  </script>
+  <script src="wind-compass-card-with-facades.js"></script>
+  <script>
+    const $ = (id) => document.getElementById(id);
+    const config = {
+      direction_entity: "sensor.wind_direction",
+      speed_entity: "sensor.wind_speed",
+      rain_entity: "sensor.rain_rate",
+      min_speed: 10,
+      max_speed: 60,
+      sectors: [
+        { name: "Cucina", direction: 0, width: 20 },
+        { name: "BagnoOspiti", direction: 0, width: 20 },
+        { name: "Salotto", direction: 0, width: 30 },
+        { name: "Ingresso", direction: 0, width: 30 },
+        { name: "Ospiti", direction: 90, width: 30 },
+        { name: "Camera", direction: 90, width: 20 },
+        { name: "Ufficio", direction: 90, width: 20 },
+        { name: "Corridoio", direction: 180, width: 20 },
+        { name: "Bagno", direction: 270, width: 30 },
+      ],
+    };
+    $("c1").setConfig({ ...config, name: "Vento" });
+    $("c2").setConfig(config);
+    $("yaml").textContent =
+`type: custom:wind-compass-card
+name: Vento
+direction_entity: sensor.wind_direction
+speed_entity: sensor.wind_speed
+rain_entity: sensor.rain_rate   # mm/h, mm, binary_sensor o weather
+min_speed: 10
+max_speed: 60
+sectors:
+  - name: Cucina
+    direction: 0     # verso cui è rivolta la finestra
+    width: 20        # solo grafica: larghezza dell'arco sull'anello
+    # exposure: 0.5  # facoltativo: finestra riparata (balcone, rientranza)
+  - name: BagnoOspiti
+    direction: 0
+    width: 20
+  - name: Salotto
+    direction: 0
+    width: 30
+  - name: Ingresso
+    direction: 0
+    width: 30
+  - name: Ospiti
+    direction: 90
+    width: 30
+  - name: Camera
+    direction: 90
+    width: 20
+  - name: Ufficio
+    direction: 90
+    width: 20
+  - name: Corridoio
+    direction: 180
+    width: 20
+  - name: Bagno
+    direction: 270
+    width: 30`;
+
+    function apply() {
+      $("dv").textContent = $("dir").value;
+      $("sv").textContent = $("spd").value;
+      $("rv").textContent = $("rain").value;
+      const hass = {
+        language: "it", locale: { language: "it" },
+        states: {
+          "sensor.wind_direction": { entity_id: "sensor.wind_direction", state: $("dir").value, attributes: { unit_of_measurement: "°" } },
+          "sensor.wind_speed": { entity_id: "sensor.wind_speed", state: $("spd").value, attributes: { unit_of_measurement: "km/h" } },
+          "sensor.rain_rate": { entity_id: "sensor.rain_rate", state: $("rain").value, attributes: { unit_of_measurement: "mm/h" } },
+        },
+      };
+      $("c1").hass = hass;
+      $("c2").hass = hass;
+      document.body.classList.toggle("dark", $("dark").checked);
+    }
+    // e.g. demo.html?dir=0&spd=40&rain=5 to open the demo with given values
+    new URLSearchParams(location.search).forEach((v, k) => { if ($(k)) $(k).value = v; });
+    ["dir", "spd", "rain", "dark"].forEach((id) => $(id).addEventListener("input", apply));
+    apply();
+  </script>
+</body>
+</html>

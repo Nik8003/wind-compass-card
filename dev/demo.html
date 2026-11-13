@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Wind Compass Card - demo</title>
+  <style>
+    body {
+      font-family: Roboto, "Segoe UI", sans-serif; margin: 24px;
+      background: #f0f2f5; color: var(--primary-text-color);
+      --primary-text-color: #212121; --secondary-text-color: #727272;
+      --divider-color: #e0e0e0; --secondary-background-color: #f5f5f5;
+      --card-background-color: #fff; --primary-color: #03a9f4;
+      --warning-color: #ffa600; --error-color: #db4437; --info-color: #039be5;
+    }
+    body.dark {
+      background: #111;
+      --primary-text-color: #e1e1e1; --secondary-text-color: #9b9b9b;
+      --divider-color: #3a3a3a; --secondary-background-color: #262626;
+      --card-background-color: #1c1c1c;
+    }
+    .controls { display: grid; gap: 10px; max-width: 420px; margin-bottom: 24px; }
+    .cards { display: flex; gap: 16px; flex-wrap: wrap; align-items: flex-start; }
+    wind-compass-card { width: 320px; }
+    wind-compass-card.small { width: 220px; }
+    pre { background: var(--card-background-color); padding: 12px; border-radius: 8px; max-width: 520px; overflow: auto; }
+    input[type=range] { width: 100%; }
+  </style>
+</head>
+<body>
+  <div class="controls">
+    <label>Direzione di provenienza: <span id="dv"></span>°<br><input id="dir" type="range" min="0" max="359" value="45"></label>
+    <label>Velocità: <span id="sv"></span> km/h<br><input id="spd" type="range" min="0" max="80" value="6"></label>
+    <label>Pioggia: <span id="rv"></span> mm/h<br><input id="rain" type="range" min="0" max="15" step="0.1" value="2"></label>
+    <label><input id="dark" type="checkbox"> Tema scuro</label>
+    <label><input id="motion" type="checkbox"> Animazione (motion)</label>
+    <label><input id="engraved_text" type="checkbox" checked> Testi incisi nel quadrante (engraved_text)</label>
+    <label>Dimensione testi incisi: <span id="esv"></span>×<br><input id="engraved_text_size" type="range" min="0.5" max="2.5" step="0.1" value="1"></label>
+    <label>Lingua:
+      <select id="language"><option value="auto">Automatica (HA in italiano)</option><option value="it">Italiano</option><option value="en">English</option><option value="de">Deutsch</option><option value="fr">Français</option><option value="es">Español</option><option value="nl">Nederlands</option></select>
+    </label>
+    <label>Stile:
+      <select id="theme"><option value="brass">Ottone</option><option value="default">Standard</option></select>
+    </label>
+    <label>Spessore finestre: <span id="wtv"></span><br><input id="window_thickness" type="range" min="6" max="24" step="1" value="14"></label>
+    <label><input id="custom_bezel" type="checkbox"> Ghiera personalizzata (solo stile Standard):
+      <input id="bezel_color" type="color" value="#0d2a4a"> opacità <span id="bov"></span>
+      <input id="bezel_opacity" type="range" min="0" max="1" step="0.05" value="1"></label>
+    <label><input id="cardmod" type="checkbox"> Prova card-mod (V viola, pioggia verde acqua, finestre vento rosa)</label>
+  </div>
+  <div class="cards">
+    <wind-compass-card id="c1"></wind-compass-card>
+    <wind-compass-card id="c2" class="small"></wind-compass-card>
+  </div>
+  <p>Configurazione usata nella demo:</p>
+  <pre id="yaml"></pre>
+
+  <script>
+    // Minimal stand-in for Home Assistant's <ha-card> outside HA
+    customElements.define("ha-card", class extends HTMLElement {
+      constructor() {
+        super();
+        this.attachShadow({ mode: "open" }).innerHTML =
+          "<style>:host{display:block;background:var(--card-background-color);border-radius:12px;box-shadow:0 2px 6px rgba(0,0,0,.12)}</style><slot></slot>";
+      }
+    });
+  </script>
+  <script>
+    // Minimal stand-in for Home Assistant's <ha-icon>: draws the real Material Design Icon,
+    // loaded from the @mdi/js package (in HA this element already exists).
+    let mdiPaths = null;
+    const mdiReady = import("https://cdn.jsdelivr.net/npm/@mdi/js@7.4.47/mdi.js")
+      .then((m) => (mdiPaths = m))
+      .catch(() => (mdiPaths = {}));
+    customElements.define("ha-icon", class extends HTMLElement {
+      connectedCallback() { mdiReady.then(() => this.draw()); }
+      draw() {
+        const name = (this.getAttribute("icon") || "").replace(/^mdi:/, "");
+        const key = "mdi" + name.split("-").map((p) => p[0].toUpperCase() + p.slice(1)).join("");
+        const d = (mdiPaths && mdiPaths[key]) || "M12 2a10 10 0 1 0 0 20a10 10 0 1 0 0-20z";
+        this.innerHTML = `<svg viewBox="0 0 24 24" width="100%" height="100%"><path fill="currentColor" d="${d}"/></svg>`;
+      }
+    });
+  </script>
+  <script src="../dist/wind-compass-card.js"></script>
+  <script>
+    const $ = (id) => document.getElementById(id);
+    const config = {
+      direction_entity: "sensor.wind_direction",
+      speed_entity: "sensor.wind_speed",
+      rain_entity: "sensor.rain_rate",
+      min_speed: 10,
+      max_speed: 60,
+      sectors: [
+        { name: "Cucina", direction: 0, width: 20, icon: "mdi:stove" },
+        { name: "BagnoOspiti", direction: 0, width: 20, icon: "mdi:toilet" },
+        { name: "Salotto", direction: 0, width: 30, icon: "mdi:sofa" },
+        { name: "Ingresso", direction: 0, width: 30, icon: "mdi:door" },
+        { name: "Ospiti", direction: 90, width: 30, icon: "mdi:bed-outline" },
+        { name: "Camera", direction: 90, width: 20, icon: "mdi:bed" },
+        { name: "Ufficio", direction: 90, width: 20, icon: "mdi:desk" },
+        { name: "Corridoio", direction: 180, width: 20, icon: "🚪" },
+        { name: "Bagno", direction: 270, width: 30, icon: "mdi:shower" },
+      ],
+    };
+    function configure() {
+      const opts = { theme: $("theme").value, language: $("language").value, motion: $("motion").checked, engraved_text: $("engraved_text").checked, engraved_text_size: Number($("engraved_text_size").value) };
+      $("esv").textContent = $("engraved_text_size").value;
+      $("bov").textContent = $("bezel_opacity").value;
+      $("wtv").textContent = $("window_thickness").value;
+      opts.window_thickness = Number($("window_thickness").value);
+      if ($("custom_bezel").checked) {
+        opts.bezel_color = $("bezel_color").value;
+        opts.bezel_opacity = Number($("bezel_opacity").value);
+      }
+      $("c1").setConfig({ ...config, name: "Vento", show_wind_name: true, ...opts });
+      $("c2").setConfig({ ...config, ...opts });
+      // card-mod puts its styles inside ha-card's shadow root as `:host { ... }`: simulate exactly that
+      document.querySelectorAll("wind-compass-card").forEach((card) => {
+        const haCard = card.shadowRoot.querySelector("ha-card");
+        let st = haCard.shadowRoot.querySelector("style.cardmod");
+        if (!st) {
+          st = document.createElement("style");
+          st.className = "cardmod";
+          haCard.shadowRoot.appendChild(st);
+        }
+        st.textContent = $("cardmod").checked
+          ? ":host { --wind-compass-chevron-color: #8e24aa; --wind-compass-drop-color: #00897b; --wind-compass-rain-color: #00897b; --wind-compass-wind-color: #e91e63; }"
+          : "";
+      });
+    }
+    $("yaml").textContent =
+`type: custom:wind-compass-card
+name: Vento
+show_wind_name: true
+theme: brass
+language: auto     # auto | it | en | de | fr | es | nl
+motion: false      # true: gocce e V in movimento
+engraved_text: true  # testi incisi nel quadrante invece che sotto
+direction_entity: sensor.wind_direction
+speed_entity: sensor.wind_speed
+rain_entity: sensor.rain_rate   # mm/h, mm, binary_sensor o weather
+min_speed: 10
+max_speed: 60
+sectors:
+  - name: Cucina
+    direction: 0     # verso cui è rivolta la finestra
+    width: 20        # larghezza reale della finestra (es. cm), disegnata in proporzione
+    icon: mdi:stove  # simbolo della stanza: icona HA (mdi:...) oppure emoji/lettera
+    # exposure: 0.5  # facoltativo: finestra riparata (balcone, rientranza)
+  - name: BagnoOspiti
+    direction: 0
+    width: 20
+  - name: Salotto
+    direction: 0
+    width: 30
+  - name: Ingresso
+    direction: 0
+    width: 30
+  - name: Ospiti
+    direction: 90
+    width: 30
+  - name: Camera
+    direction: 90
+    width: 20
+  - name: Ufficio
+    direction: 90
+    width: 20
+  - name: Corridoio
+    direction: 180
+    width: 20
+  - name: Bagno
+    direction: 270
+    width: 30`;
+
+    function apply() {
+      $("dv").textContent = $("dir").value;
+      $("sv").textContent = $("spd").value;
+      $("rv").textContent = $("rain").value;
+      const hass = {
+        language: "it", locale: { language: "it" },
+        states: {
+          "sensor.wind_direction": { entity_id: "sensor.wind_direction", state: $("dir").value, attributes: { unit_of_measurement: "°" } },
+          "sensor.wind_speed": { entity_id: "sensor.wind_speed", state: $("spd").value, attributes: { unit_of_measurement: "km/h" } },
+          "sensor.rain_rate": { entity_id: "sensor.rain_rate", state: $("rain").value, attributes: { unit_of_measurement: "mm/h" } },
+        },
+      };
+      $("c1").hass = hass;
+      $("c2").hass = hass;
+      document.body.classList.toggle("dark", $("dark").checked);
+    }
+    // e.g. demo.html?dir=0&spd=40&rain=5&motion=1&language=en&theme=default&cardmod=1
+    new URLSearchParams(location.search).forEach((v, k) => {
+      const el = $(k);
+      if (!el) return;
+      if (el.type === "checkbox") el.checked = v !== "0";
+      else el.value = v;
+    });
+    ["dir", "spd", "rain", "dark"].forEach((id) => $(id).addEventListener("input", apply));
+    ["motion", "engraved_text", "engraved_text_size", "window_thickness", "custom_bezel", "bezel_color", "bezel_opacity", "language", "theme", "cardmod"].forEach((id) => $(id).addEventListener("input", () => { configure(); apply(); }));
+    configure();
+    apply();
+  </script>
+</body>
+</html>
