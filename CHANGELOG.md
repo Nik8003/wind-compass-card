@@ -1,9 +1,5 @@
 # Changelog
 
-## 1.0.1
-
-- Adds the Home Assistant Marketplace / HACS validation workflow (GitHub Action). No changes to the card.
-
 ## 1.0.0 — first public release
 
 A Home Assistant card that shows where the wind and the rain hit your house.
@@ -16,3 +12,4 @@ A Home Assistant card that shows where the wind and the rain hit your house.
 - **Languages**: English, Italian, German, French, Spanish, Dutch; every text can be overridden with `texts`.
 - **Customization**: public CSS variables for card-mod and themes.
 - **Easy setup**: only the two wind sensors are required; every other option has a default. Visual editor that writes only the options you change.
+- **Marketplace ready**: `hacs.json`, a release with the card file, and a validation workflow (GitHub Action).

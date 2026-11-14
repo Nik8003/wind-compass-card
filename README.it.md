@@ -1,8 +1,8 @@
 [English](README.md) · **Italiano** · [Deutsch](README.de.md) · [Français](README.fr.md) · [Español](README.es.md) · [Nederlands](README.nl.md)
 
-[![Marketplace](https://img.shields.io/badge/Marketplace-Dashboard-41BDF5.svg)](https://my.home-assistant.io/redirect/marketplace_repository/?owner=Nik8003&repository=wind-compass-card&category=plugin) [![GitHub release](https://img.shields.io/github/v/release/Nik8003/wind-compass-card)](https://github.com/Nik8003/wind-compass-card/releases) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Marketplace](https://img.shields.io/badge/Marketplace-Dashboard-41BDF5.svg)](https://my.home-assistant.io/redirect/marketplace_repository/?owner=Nik8003&repository=wind-rain-compass-card&category=plugin) [![GitHub release](https://img.shields.io/github/v/release/Nik8003/wind-rain-compass-card)](https://github.com/Nik8003/wind-rain-compass-card/releases) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-# Wind Compass Card
+# Wind Rain Compass Card
 
 Una card per Home Assistant che mostra **dove vento e pioggia colpiscono la tua casa**: direzione e forza del vento, pioggia e quanto ogni finestra viene colpita. Nata per un'esigenza semplice: chiudere le tapparelle quando il vento spinge la pioggia sui vetri.
 
@@ -78,20 +78,20 @@ Inglese, italiano, tedesco, francese, spagnolo e olandese, scelte automaticament
 
 ### Marketplace (Home Assistant 2026.11 e successivi)
 
-[![Open in your Home Assistant](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/marketplace_repository/?owner=Nik8003&repository=wind-compass-card&category=plugin)
+[![Open in your Home Assistant](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/marketplace_repository/?owner=Nik8003&repository=wind-rain-compass-card&category=plugin)
 
-1. Clicca il pulsante qui sopra, oppure vai in **Impostazioni → Marketplace**, scegli di aggiungere da link (in alto a destra) e inserisci `https://github.com/Nik8003/wind-compass-card`.
-2. Installa **Wind Compass Card** (tipo **Dashboard**) e ricarica il browser.
+1. Clicca il pulsante qui sopra, oppure vai in **Impostazioni → Marketplace**, scegli di aggiungere da link (in alto a destra) e inserisci `https://github.com/Nik8003/wind-rain-compass-card`.
+2. Installa **Wind Rain Compass Card** (tipo **Dashboard**) e ricarica il browser.
 
 ### HACS (Home Assistant prima della 2026.11)
 
-1. HACS → ⋮ → *Repository personalizzati* → aggiungi `https://github.com/Nik8003/wind-compass-card`, categoria **Dashboard**.
-2. Installa **Wind Compass Card** e ricarica il browser.
+1. HACS → ⋮ → *Repository personalizzati* → aggiungi `https://github.com/Nik8003/wind-rain-compass-card`, categoria **Dashboard**.
+2. Installa **Wind Rain Compass Card** e ricarica il browser.
 
 ### Manuale
 
-1. Copia `dist/wind-compass-card.js` in `<config>/www/wind-compass-card.js`.
-2. Impostazioni → Dashboard → ⋮ → *Risorse* → aggiungi `/local/wind-compass-card.js?v=1` come **Modulo JavaScript**.
+1. Copia `dist/wind-rain-compass-card.js` in `<config>/www/wind-rain-compass-card.js`.
+2. Impostazioni → Dashboard → ⋮ → *Risorse* → aggiungi `/local/wind-rain-compass-card.js?v=1` come **Modulo JavaScript**.
 3. Ricarica il browser. A ogni aggiornamento del file cambia `?v=1` in `?v=2`, `?v=3`… così browser e app caricano la nuova versione.
 
 ## Configurazione
@@ -99,7 +99,7 @@ Inglese, italiano, tedesco, francese, spagnolo e olandese, scelte automaticament
 Servono solo i due sensori del vento; tutto il resto ha un valore predefinito:
 
 ```yaml
-type: custom:wind-compass-card
+type: custom:wind-rain-compass-card
 direction_entity: sensor.wind_direction
 speed_entity: sensor.wind_speed
 ```
@@ -107,7 +107,7 @@ speed_entity: sensor.wind_speed
 Aggiungi `rain_entity` per vedere la pioggia e `sectors` per vedere le tue finestre. Un esempio più completo:
 
 ```yaml
-type: custom:wind-compass-card
+type: custom:wind-rain-compass-card
 name: Vento
 direction_entity: sensor.wind_direction
 speed_entity: sensor.wind_speed

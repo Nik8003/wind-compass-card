@@ -11,7 +11,7 @@ $root = Split-Path -Parent $PSScriptRoot
 $page = "file:///" + ((Join-Path $root "dev\screenshot.html") -replace "\\", "/")
 $outDir = Join-Path $root "docs\images"
 New-Item -ItemType Directory -Force $outDir | Out-Null
-$profileDir = Join-Path $env:TEMP "wind-compass-card-shots"
+$profileDir = Join-Path $env:TEMP "wind-rain-compass-card-shots"
 
 # The windows of the example house
 $house = @(

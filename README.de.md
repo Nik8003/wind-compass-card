@@ -1,8 +1,8 @@
 [English](README.md) · [Italiano](README.it.md) · **Deutsch** · [Français](README.fr.md) · [Español](README.es.md) · [Nederlands](README.nl.md)
 
-[![Marketplace](https://img.shields.io/badge/Marketplace-Dashboard-41BDF5.svg)](https://my.home-assistant.io/redirect/marketplace_repository/?owner=Nik8003&repository=wind-compass-card&category=plugin) [![GitHub release](https://img.shields.io/github/v/release/Nik8003/wind-compass-card)](https://github.com/Nik8003/wind-compass-card/releases) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Marketplace](https://img.shields.io/badge/Marketplace-Dashboard-41BDF5.svg)](https://my.home-assistant.io/redirect/marketplace_repository/?owner=Nik8003&repository=wind-rain-compass-card&category=plugin) [![GitHub release](https://img.shields.io/github/v/release/Nik8003/wind-rain-compass-card)](https://github.com/Nik8003/wind-rain-compass-card/releases) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-# Wind Compass Card
+# Wind Rain Compass Card
 
 Eine Home-Assistant-Karte, die zeigt, **wo Wind und Regen dein Haus treffen**: Windrichtung und -stärke, Regen und wie stark jedes deiner Fenster getroffen wird. Entstanden für einen einfachen Zweck: die Rollläden schließen, wenn der Wind den Regen gegen die Scheiben drückt.
 
@@ -78,20 +78,20 @@ Englisch, Italienisch, Deutsch, Französisch, Spanisch und Niederländisch, auto
 
 ### Marketplace (Home Assistant 2026.11 und neuer)
 
-[![Open in your Home Assistant](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/marketplace_repository/?owner=Nik8003&repository=wind-compass-card&category=plugin)
+[![Open in your Home Assistant](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/marketplace_repository/?owner=Nik8003&repository=wind-rain-compass-card&category=plugin)
 
-1. Auf die Schaltfläche oben klicken oder **Einstellungen → Marketplace** öffnen, oben rechts das Hinzufügen per Link wählen und `https://github.com/Nik8003/wind-compass-card` eingeben.
-2. **Wind Compass Card** (Typ **Dashboard**) installieren und den Browser neu laden.
+1. Auf die Schaltfläche oben klicken oder **Einstellungen → Marketplace** öffnen, oben rechts das Hinzufügen per Link wählen und `https://github.com/Nik8003/wind-rain-compass-card` eingeben.
+2. **Wind Rain Compass Card** (Typ **Dashboard**) installieren und den Browser neu laden.
 
 ### HACS (Home Assistant vor 2026.11)
 
-1. HACS → ⋮ → *Benutzerdefinierte Repositories* → `https://github.com/Nik8003/wind-compass-card` hinzufügen, Kategorie **Dashboard**.
-2. **Wind Compass Card** installieren und den Browser neu laden.
+1. HACS → ⋮ → *Benutzerdefinierte Repositories* → `https://github.com/Nik8003/wind-rain-compass-card` hinzufügen, Kategorie **Dashboard**.
+2. **Wind Rain Compass Card** installieren und den Browser neu laden.
 
 ### Manuell
 
-1. `dist/wind-compass-card.js` nach `<config>/www/wind-compass-card.js` kopieren.
-2. Einstellungen → Dashboards → ⋮ → *Ressourcen* → `/local/wind-compass-card.js?v=1` als **JavaScript-Modul** hinzufügen.
+1. `dist/wind-rain-compass-card.js` nach `<config>/www/wind-rain-compass-card.js` kopieren.
+2. Einstellungen → Dashboards → ⋮ → *Ressourcen* → `/local/wind-rain-compass-card.js?v=1` als **JavaScript-Modul** hinzufügen.
 3. Browser neu laden. Nach jedem Update der Datei `?v=1` in `?v=2`, `?v=3`… ändern, damit Browser und App die neue Version laden.
 
 ## Konfiguration
@@ -99,7 +99,7 @@ Englisch, Italienisch, Deutsch, Französisch, Spanisch und Niederländisch, auto
 Nur die beiden Windsensoren sind Pflicht; alles andere hat einen Standardwert:
 
 ```yaml
-type: custom:wind-compass-card
+type: custom:wind-rain-compass-card
 direction_entity: sensor.wind_direction
 speed_entity: sensor.wind_speed
 ```
@@ -107,7 +107,7 @@ speed_entity: sensor.wind_speed
 Mit `rain_entity` siehst du den Regen, mit `sectors` deine Fenster. Ein ausführlicheres Beispiel:
 
 ```yaml
-type: custom:wind-compass-card
+type: custom:wind-rain-compass-card
 name: Wind
 direction_entity: sensor.wind_direction
 speed_entity: sensor.wind_speed

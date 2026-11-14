@@ -1,5 +1,5 @@
 /*
- * Wind Compass Card for Home Assistant
+ * Wind Rain Compass Card for Home Assistant
  *
  * A wind & rain compass: chevrons along the wind axis show direction and strength (denser
  * with stronger wind), raindrops fly across it with the wind, and each configured window sits
@@ -10,7 +10,7 @@
  * No build step: this single file is the whole card.
  */
 
-const CARD_VERSION = "1.0.1";
+const CARD_VERSION = "1.0.0";
 
 // ---------- Translations ----------
 // Each language has: the 16 compass points, the 8 traditional winds of the Mediterranean wind
@@ -729,9 +729,9 @@ const BRASS_DEFS = `
   </filter>
 `;
 
-class WindCompassCard extends HTMLElement {
+class WindRainCompassCard extends HTMLElement {
   static getConfigElement() {
-    return document.createElement("wind-compass-card-editor");
+    return document.createElement("wind-rain-compass-card-editor");
   }
 
   static getStubConfig(hass) {
@@ -1223,7 +1223,7 @@ class WindCompassCard extends HTMLElement {
 // ---------- Visual editor (uses Home Assistant's built-in ha-form) ----------
 // Windows/sectors are edited in YAML (code editor); the form keeps them untouched.
 
-class WindCompassCardEditor extends HTMLElement {
+class WindRainCompassCardEditor extends HTMLElement {
   setConfig(config) {
     this._config = config;
     this._render();
@@ -1326,19 +1326,19 @@ class WindCompassCardEditor extends HTMLElement {
   }
 }
 
-if (!customElements.get("wind-compass-card")) {
-  customElements.define("wind-compass-card", WindCompassCard);
+if (!customElements.get("wind-rain-compass-card")) {
+  customElements.define("wind-rain-compass-card", WindRainCompassCard);
 }
-if (!customElements.get("wind-compass-card-editor")) {
-  customElements.define("wind-compass-card-editor", WindCompassCardEditor);
+if (!customElements.get("wind-rain-compass-card-editor")) {
+  customElements.define("wind-rain-compass-card-editor", WindRainCompassCardEditor);
 }
 
 window.customCards = window.customCards || [];
 window.customCards.push({
-  type: "wind-compass-card",
-  name: "Wind Compass Card",
+  type: "wind-rain-compass-card",
+  name: "Wind Rain Compass Card",
   description: "Wind direction and strength around your house, with windows that light up when wind and rain hit them.",
   preview: true,
 });
 
-console.info(`%c WIND-COMPASS-CARD %c v${CARD_VERSION} `, "color:white;background:#0277bd;font-weight:bold", "color:#0277bd");
+console.info(`%c WIND-RAIN-COMPASS-CARD %c v${CARD_VERSION} `, "color:white;background:#0277bd;font-weight:bold", "color:#0277bd");

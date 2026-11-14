@@ -10,7 +10,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Wind Compass Card - screenshot</title>
+  <title>Wind Rain Compass Card - screenshot</title>
   <style>
     html, body { margin: 0; }
     body {
@@ -30,7 +30,7 @@
   </style>
 </head>
 <body>
-  <wind-compass-card id="card"></wind-compass-card>
+  <wind-rain-compass-card id="card"></wind-rain-compass-card>
   <script>
     customElements.define("ha-card", class extends HTMLElement {
       constructor() {
@@ -52,7 +52,7 @@
       }
     });
   </script>
-  <script src="../dist/wind-compass-card.js"></script>
+  <script src="../dist/wind-rain-compass-card.js"></script>
   <script>
     const q = new URLSearchParams(location.search);
     const card = document.getElementById("card");
