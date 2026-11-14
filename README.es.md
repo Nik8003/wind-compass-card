@@ -1,5 +1,7 @@
 [English](README.md) · [Italiano](README.it.md) · [Deutsch](README.de.md) · [Français](README.fr.md) · **Español** · [Nederlands](README.nl.md)
 
+[![Marketplace](https://img.shields.io/badge/Marketplace-Dashboard-41BDF5.svg)](https://my.home-assistant.io/redirect/marketplace_repository/?owner=Nik8003&repository=wind-compass-card&category=plugin) [![GitHub release](https://img.shields.io/github/v/release/Nik8003/wind-compass-card)](https://github.com/Nik8003/wind-compass-card/releases) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 # Wind Compass Card
 
 Una tarjeta para Home Assistant que muestra **dónde golpean el viento y la lluvia tu casa**: dirección y fuerza del viento, lluvia y cuánto se ve afectada cada una de tus ventanas. Nació de una necesidad sencilla: bajar las persianas cuando el viento empuja la lluvia contra los cristales.
@@ -74,9 +76,16 @@ Inglés, italiano, alemán, francés, español y neerlandés, elegidos automáti
 
 ## Instalación
 
-### HACS (repositorio personalizado)
+### Marketplace (Home Assistant 2026.11 y posteriores)
 
-1. HACS → ⋮ → *Repositorios personalizados* → añade la URL de este repositorio, categoría **Dashboard**.
+[![Open in your Home Assistant](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/marketplace_repository/?owner=Nik8003&repository=wind-compass-card&category=plugin)
+
+1. Pulsa el botón de arriba, o ve a **Ajustes → Marketplace**, elige añadir desde un enlace (arriba a la derecha) e introduce `https://github.com/Nik8003/wind-compass-card`.
+2. Instala **Wind Compass Card** (tipo **Dashboard**) y recarga el navegador.
+
+### HACS (Home Assistant anterior a 2026.11)
+
+1. HACS → ⋮ → *Repositorios personalizados* → añade `https://github.com/Nik8003/wind-compass-card`, categoría **Dashboard**.
 2. Instala **Wind Compass Card** y recarga el navegador.
 
 ### Manual

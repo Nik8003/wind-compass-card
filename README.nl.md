@@ -1,5 +1,7 @@
 [English](README.md) · [Italiano](README.it.md) · [Deutsch](README.de.md) · [Français](README.fr.md) · [Español](README.es.md) · **Nederlands**
 
+[![Marketplace](https://img.shields.io/badge/Marketplace-Dashboard-41BDF5.svg)](https://my.home-assistant.io/redirect/marketplace_repository/?owner=Nik8003&repository=wind-compass-card&category=plugin) [![GitHub release](https://img.shields.io/github/v/release/Nik8003/wind-compass-card)](https://github.com/Nik8003/wind-compass-card/releases) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 # Wind Compass Card
 
 Een Home Assistant-kaart die laat zien **waar wind en regen je huis raken**: windrichting en -kracht, regen, en hoe hard elk van je ramen wordt geraakt. Ontstaan uit een eenvoudige behoefte: de rolluiken sluiten wanneer de wind de regen tegen de ramen blaast.
@@ -74,9 +76,16 @@ Engels, Italiaans, Duits, Frans, Spaans en Nederlands, automatisch gekozen op ba
 
 ## Installatie
 
-### HACS (aangepaste repository)
+### Marketplace (Home Assistant 2026.11 en nieuwer)
 
-1. HACS → ⋮ → *Aangepaste repositories* → voeg de URL van deze repository toe, categorie **Dashboard**.
+[![Open in your Home Assistant](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/marketplace_repository/?owner=Nik8003&repository=wind-compass-card&category=plugin)
+
+1. Klik op de knop hierboven, of open **Instellingen → Marketplace**, kies toevoegen via een link (rechtsboven) en voer `https://github.com/Nik8003/wind-compass-card` in.
+2. Installeer **Wind Compass Card** (type **Dashboard**) en herlaad de browser.
+
+### HACS (Home Assistant vóór 2026.11)
+
+1. HACS → ⋮ → *Aangepaste repositories* → voeg `https://github.com/Nik8003/wind-compass-card` toe, categorie **Dashboard**.
 2. Installeer **Wind Compass Card** en herlaad de browser.
 
 ### Handmatig
