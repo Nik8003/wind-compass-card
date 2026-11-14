@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.1
+
+- Adds the Home Assistant Marketplace / HACS validation workflow (GitHub Action). No changes to the card.
+
 ## 1.0.0 — first public release
 
 A Home Assistant card that shows where the wind and the rain hit your house.

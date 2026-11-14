@@ -10,7 +10,7 @@
  * No build step: this single file is the whole card.
  */
 
-const CARD_VERSION = "1.0.0";
+const CARD_VERSION = "1.0.1";
 
 // ---------- Translations ----------
 // Each language has: the 16 compass points, the 8 traditional winds of the Mediterranean wind
